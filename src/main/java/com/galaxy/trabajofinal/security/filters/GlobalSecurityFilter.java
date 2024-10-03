@@ -23,6 +23,11 @@ public class GlobalSecurityFilter {
         http.authorizeHttpRequests(
                 authz-> authz.requestMatchers(PUBLIC).permitAll()
         );
+        http.authorizeHttpRequests(
+                authz-> authz.requestMatchers("/api/v1/archive/**").hasAnyRole("ADMIN","USER")
+                        .anyRequest()
+                        .authenticated()
+        );
         http.csrf(AbstractHttpConfigurer::disable);
         http.addFilterBefore(securityTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

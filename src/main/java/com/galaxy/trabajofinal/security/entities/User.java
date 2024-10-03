@@ -1,9 +1,11 @@
 package com.galaxy.trabajofinal.security.entities;
 
+import com.galaxy.trabajofinal.archive.domain.entities.Archive;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -27,7 +29,7 @@ public class User {
     @Column(name="code_2f")
     private String code2f;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -35,6 +37,7 @@ public class User {
     )
     private Set<Role> roles;
 
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Archive> archives;
 
 }
