@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class GlobalSecurityFilter {
     private final SecurityTokenFilter securityTokenFilter;
+    private final SpecialAuthorizationFilter specialAuthorizationFilter;
     private final String[] PUBLIC={
         "/api/v1/auth/**"
     };
@@ -34,6 +35,7 @@ public class GlobalSecurityFilter {
         );
         http.csrf(AbstractHttpConfigurer::disable);
         http.addFilterBefore(securityTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(specialAuthorizationFilter, SecurityTokenFilter.class);
         return http.build();
     }
     @Bean
